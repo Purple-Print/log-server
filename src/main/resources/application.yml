@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: application
+  profiles:
+    active: dev, awsdb, awsS3
+  config:
+    import: optional:configserver:http://13.125.28.145:9999 # config server ??
