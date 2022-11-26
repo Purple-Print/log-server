@@ -51,10 +51,10 @@ public class LogService {
         return (List<LogModel>) logRepository.findAllByChildId(id).orElse(null);
     }
 
-    public List<LogModel> addLogs(List<LogModel> list) {
+    public LogModel addLogs(LogModel log) {
 
 
-        return (List<LogModel>) logRepository.saveAll(list);
+        return logRepository.save(log);
     }
 
     @Scheduled(cron = "0 1 22 * * *")
@@ -78,7 +78,11 @@ public class LogService {
         String serverURL = "http://34.64.214.200:8000/";
 
         RestTemplate restTemplate = new RestTemplate();
+
+        System.out.println("ddddd");
         ResponseEntity<AnalysisDTO> response = restTemplate.postForEntity(serverURL, requestEntity, AnalysisDTO.class);
+
+        System.out.println("response : " + response);
 
         return response;
     }
