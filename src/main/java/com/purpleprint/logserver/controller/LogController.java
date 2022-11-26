@@ -35,7 +35,7 @@ public class LogController {
     }
 
     @PostMapping("/logs")
-    public ResponseEntity<AnalysisDTO> getAllLogs() {
+    public Map<String, Object> getAllLogs() {
 
         Page<LogModel> getLogResult = logService.getAllLogs();
 
@@ -44,10 +44,12 @@ public class LogController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("coorperate", logList);
 
-        ResponseEntity<AnalysisDTO> response = logService.sendLogs(resultMap);
+//        System.out.println("responsedddd : ");
 
-        return response;
-//        return resultMap;
+//        ResponseEntity<AnalysisDTO> response = logService.sendLogs(resultMap);
+//
+//        return response;
+        return resultMap;
     }
 
     @GetMapping("/log/{key}")
@@ -63,9 +65,9 @@ public class LogController {
     }
 
     @PostMapping("/log")
-    public List<LogModel> addLogs(@RequestBody List<LogModel> list) {
+    public LogModel addLogs(@RequestBody LogModel log) {
 
-        return logService.addLogs(list);
+        return logService.addLogs(log);
     }
 
 
