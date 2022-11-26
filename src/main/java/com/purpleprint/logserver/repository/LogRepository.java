@@ -23,8 +23,5 @@ import java.util.Optional;
 @Repository
 public interface LogRepository extends ElasticsearchRepository<LogModel, String> {
 
-
-    LogModel deleteAllByChildId(Integer id);
-
     Optional<Object> findAllByChildId(int id);
 }
