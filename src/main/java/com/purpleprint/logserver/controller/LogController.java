@@ -1,19 +1,13 @@
 package com.purpleprint.logserver.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.purpleprint.logserver.dto.AnalysisDTO;
 import com.purpleprint.logserver.model.LogModel;
 import com.purpleprint.logserver.service.LogService;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.json.JsonObject;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -40,8 +34,8 @@ public class LogController {
         this.logService = logService;
     }
 
-    @GetMapping("/logs")
-    public Map<?, ?> getAllLogs() {
+    @PostMapping("/logs")
+    public ResponseEntity<AnalysisDTO> getAllLogs() {
 
         Page<LogModel> getLogResult = logService.getAllLogs();
 
@@ -50,7 +44,10 @@ public class LogController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("coorperate", logList);
 
-        return resultMap;
+        ResponseEntity<AnalysisDTO> response = logService.sendLogs(resultMap);
+
+        return response;
+//        return resultMap;
     }
 
     @GetMapping("/log/{key}")
@@ -71,15 +68,11 @@ public class LogController {
         return logService.addLogs(list);
     }
 
-//    @DeleteMapping("/logs")
-//    public String deleteLog() {
-//
-//        int result = logService.deleteLog();
-//
-//        if(result == 0) {
-//            return "삭제 실패";
-//        } else{
-//            return "삭제 성공";
-//        }
-//    }
+
+    @DeleteMapping("/logs")
+    public void deleteLog() {
+
+        logService.deleteLog();
+
+    }
 }
