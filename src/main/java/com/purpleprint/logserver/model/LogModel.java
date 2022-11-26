@@ -28,34 +28,30 @@ public class LogModel {
     @Id
     private String key;
 
-    @JsonProperty("x")
-    private Float xcoord;
+    private Float x;
 
-    @JsonProperty("z")
-    private Float zcoord;
+    private Float z;
 
     @JsonProperty("id")
     private Integer childId;
 
-
-    @JsonProperty("time")
-    private String at;
+    private String time;
 
 
-    public Float getXcoord() {
-        return xcoord;
+    public Float getX() {
+        return x;
     }
 
-    public void setXcoord(Float xcoord) {
-        this.xcoord = xcoord;
+    public void setX(Float x) {
+        this.x = x;
     }
 
-    public Float getZcoord() {
-        return zcoord;
+    public Float getZ() {
+        return z;
     }
 
-    public void setZcoord(Float zcoord) {
-        this.zcoord = zcoord;
+    public void setZ(Float z) {
+        this.z = z;
     }
 
     public Integer getChildId() {
@@ -66,11 +62,11 @@ public class LogModel {
         this.childId = childId;
     }
 
-    public String getAt() {
-        return at;
+    public String getTime() {
+        return time;
     }
 
-    public void setAt(String at) {
-        this.at = at;
+    public void setTime(String time) {
+        this.time = time;
     }
 }
