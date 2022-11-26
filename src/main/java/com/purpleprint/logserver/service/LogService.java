@@ -1,9 +1,11 @@
 package com.purpleprint.logserver.service;
 
+import com.purpleprint.logserver.dto.AnalysisDTO;
 import com.purpleprint.logserver.model.LogModel;
 import com.purpleprint.logserver.repository.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +53,7 @@ public class LogService {
 
     public List<LogModel> addLogs(List<LogModel> list) {
 
+
         return (List<LogModel>) logRepository.saveAll(list);
     }
 
@@ -64,14 +68,18 @@ public class LogService {
         return (Page<LogModel>) logRepository.findAll();
     }
 
-//    public void sendLogs(Map<String, Object> resultMap) {
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        String serverURL = "http://34.64.214.200:8000/";
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<Map<String, Object>> response = restTemplate.postForEntity(serverURL, resultMap, );
-//    }
+    public ResponseEntity<AnalysisDTO> sendLogs(Map<String, Object> resultMap) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(resultMap, headers);
+
+        String serverURL = "http://34.64.214.200:8000/";
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<AnalysisDTO> response = restTemplate.postForEntity(serverURL, requestEntity, AnalysisDTO.class);
+
+        return response;
+    }
 }
