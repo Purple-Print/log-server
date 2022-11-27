@@ -34,7 +34,7 @@ public class Logfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "logfile_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "logfile_url")
     private String url;
