@@ -3,6 +3,7 @@ package com.purpleprint.logserver.controller;
 import com.purpleprint.logserver.common.responsemessage.ResponseMessage;
 import com.purpleprint.logserver.dto.AnalysisDTO;
 import com.purpleprint.logserver.dto.FileReadDTO;
+import com.purpleprint.logserver.dto.RequestDTO;
 import com.purpleprint.logserver.model.LogModel;
 import com.purpleprint.logserver.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,16 +50,28 @@ public class LogController {
     //ai api 호출해서 받은 분석결과 db에 저장 로직
     @Scheduled(cron = "0 0 22 * * *")
     @GetMapping("/logs")
-    public ResponseEntity<AnalysisDTO> sendLogsAndGetAnalysisResult() {
+    public ResponseEntity<?> sendLogsAndGetAnalysisResult() {
 
         Page<LogModel> getLogResult = logService.getAllLogs();
 
         List<LogModel> logList = getLogResult.getContent();
 
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("coorperate", logList);
+        List<RequestDTO> requestLogList = new ArrayList<>();
 
-        ResponseEntity<AnalysisDTO> response = logService.sendLogs(resultMap);
+        for (LogModel logs : logList) {
+            RequestDTO requestDTO = new RequestDTO();
+            requestDTO.setX(logs.getX().toString());
+            requestDTO.setZ(logs.getZ().toString());
+            requestDTO.setId(logs.getChildId().toString());
+            requestDTO.setTime(logs.getTime());
+
+            requestLogList.add(requestDTO);
+        }
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("coorperate", requestLogList);
+
+        ResponseEntity<?> response = logService.sendLogs(resultMap);
 
 //        boolean result = logService.setAnalysisData(response);
 
@@ -145,6 +158,17 @@ public class LogController {
                 .ok()
                 .body(new ResponseMessage(HttpStatus.OK, "log file uploaded and elasticsearch logs deleted successfully!", responseMap));
 
+    }
+
+    @GetMapping("/test")
+    public void test () {
+        System.out.println(new Date().getTime());
+
+        long date = new Date().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date formatDate = new Date(date);
+        System.out.println(dateFormat.format(formatDate));
     }
 
 }
