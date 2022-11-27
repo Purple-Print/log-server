@@ -1,18 +1,25 @@
 package com.purpleprint.logserver.controller;
 
+import com.amazonaws.util.IOUtils;
 import com.purpleprint.logserver.common.responsemessage.ResponseMessage;
 import com.purpleprint.logserver.dto.AnalysisDTO;
 import com.purpleprint.logserver.dto.FileReadDTO;
 import com.purpleprint.logserver.model.LogModel;
 import com.purpleprint.logserver.service.LogService;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -41,6 +48,7 @@ public class LogController {
 
     private final LogService logService;
 
+
     @Autowired
     public LogController(LogService logService) {
         this.logService = logService;
@@ -67,7 +75,7 @@ public class LogController {
 
     //생성된 모든 로그 조회
     @PostMapping("/logs")
-    public Map<String, Object> getllLogs() {
+    public Map<String, Object> getAllLogs() {
 
         Page<LogModel> getLogResult = logService.getAllLogs();
 
@@ -113,6 +121,7 @@ public class LogController {
         String filePath = rootLocation + "\\src\\main\\resources\\logs.txt";
         System.out.println("filePath : " + filePath);
         String arr;
+        File file = new File(filePath);
 
         //파일에 로그 정보 저장
         for (LogModel logs : logList) {
@@ -126,15 +135,28 @@ public class LogController {
 
             try {
                 arr = arr.substring("FileReadDTO(".length(), arr.indexOf(")")) + "\n";
-                File file = new File(filePath); // File객체 생성
                 if(!file.exists()){ // 파일이 존재하지 않으면
                     file.createNewFile(); // 신규생성
                 }
-                Files.write(Paths.get(filePath), arr.getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get(filePath), arr.getBytes(), StandardOpenOption.WRITE);
             }catch (IOException e) {
                 //exception handling left as an exercise for the reader
             }
         }
+
+        FileItem fileItem = new DiskFileItem("logfile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+
+        try {
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+
+        } catch (IOException ex) {
+
+        }
+
+        MultipartFile mFile = new CommonsMultipartFile(fileItem);
+        logService.saveLogFile(mFile);
 
         //elasticsearch에 있는 로그 정보 삭제
         logService.deleteLog();
@@ -146,5 +168,4 @@ public class LogController {
                 .body(new ResponseMessage(HttpStatus.OK, "log file uploaded and elasticsearch logs deleted successfully!", responseMap));
 
     }
-
 }

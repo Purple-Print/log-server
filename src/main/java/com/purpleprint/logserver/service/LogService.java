@@ -2,6 +2,7 @@ package com.purpleprint.logserver.service;
 
 import com.purpleprint.logserver.dto.AnalysisDTO;
 import com.purpleprint.logserver.model.LogModel;
+import com.purpleprint.logserver.repository.AwsS3UploadRepository;
 import com.purpleprint.logserver.repository.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -32,10 +36,12 @@ import java.util.Map;
 public class LogService {
 
     private final LogRepository logRepository;
+    private final AwsS3UploadService awsS3UploadService;
 
     @Autowired
-    public LogService(LogRepository logRepository) {
+    public LogService(LogRepository logRepository, AwsS3UploadService awsS3UploadService) {
         this.logRepository = logRepository;
+        this.awsS3UploadService = awsS3UploadService;
     }
 
     public LogModel addLogs(LogModel log) {
@@ -71,5 +77,9 @@ public class LogService {
         System.out.println("response : " + response);
 
         return response;
+    }
+
+    public void saveLogFile(MultipartFile file) {
+        awsS3UploadService.upload("logfiles", file);
     }
 }
