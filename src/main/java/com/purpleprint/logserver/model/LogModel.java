@@ -3,10 +3,6 @@ package com.purpleprint.logserver.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-
-import java.util.Date;
 
 /**
  * <pre>
@@ -36,7 +32,6 @@ public class LogModel {
     private Integer childId;
 
     private String time;
-
 
     public Float getX() {
         return x;

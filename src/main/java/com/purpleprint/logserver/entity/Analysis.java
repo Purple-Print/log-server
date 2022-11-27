@@ -21,9 +21,9 @@ import java.util.Date;
  * @author 이상학(최초 작성자)
  * @version 1(클래스 버전)
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Data   //lombok 사용시 class의 모든 필드에 대한 getter/setter/toString/equals 와 같은 함수 사용 가능
+@AllArgsConstructor // 모든 필드 값을 파라미터로 받는 생성자를 만듦
+@NoArgsConstructor  // 파라미터가 없는 기본 생성자를 생성
 @Entity
 @Table(name = "tbl_analysis")
 public class Analysis {
@@ -32,9 +32,6 @@ public class Analysis {
     @Column(name = "analysis_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "final_feedback")
-    private String finalFeedback;
 
     @Column(name = "friend1")
     private int friend1;
@@ -48,26 +45,11 @@ public class Analysis {
     @Column(name = "friend2_comment")
     private String friend2Comment;
 
-    @Column(name = "friend3")
-    private int friend3;
-
-    @Column(name = "friend3_comment")
-    private String friend3Comment;
-
-    @Column(name = "friend4")
-    private int friend4;
-
-    @Column(name = "friend4_comment")
-    private String friend4Comment;
-
-    @Column(name = "concurrent_child")
-    private int concurrentChild;
-
     @Column(name = "play_place")
     private String playPlace;
 
     @JoinColumn(name = "child_id")
-    private int childId;
+    private int child;
 
     @Column(name = "send_yn")
     private String sendYn;
