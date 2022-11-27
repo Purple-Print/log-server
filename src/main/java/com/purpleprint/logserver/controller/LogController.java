@@ -83,6 +83,8 @@ public class LogController {
     @PostMapping("/log")
     public LogModel addLogs(@RequestBody LogModel log) {
 
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+
         String dateFormatStringTime;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Long longTime = Long.parseLong(log.getTime());
