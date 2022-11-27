@@ -9,12 +9,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -41,23 +38,12 @@ public class LogService {
         this.logRepository = logRepository;
     }
 
-    public LogModel getLog(String key) {
-
-        return logRepository.findById(key).orElse(null);
-    }
-
-    public List<LogModel> getLogs(int id) {
-
-        return (List<LogModel>) logRepository.findAllByChildId(id).orElse(null);
-    }
-
     public LogModel addLogs(LogModel log) {
 
 
         return logRepository.save(log);
     }
 
-    @Scheduled(cron = "0 1 22 * * *")
     public void deleteLog() {
 
         logRepository.deleteAll();
@@ -71,7 +57,7 @@ public class LogService {
     public ResponseEntity<AnalysisDTO> sendLogs(Map<String, Object> resultMap) {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         HttpEntity<?> requestEntity = new HttpEntity<>(resultMap, headers);
 
@@ -79,8 +65,8 @@ public class LogService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        System.out.println("ddddd");
-        ResponseEntity<AnalysisDTO> response = restTemplate.postForEntity(serverURL, requestEntity, AnalysisDTO.class);
+        ResponseEntity<AnalysisDTO> response = restTemplate.getForEntity(serverURL, AnalysisDTO.class, requestEntity);
+
 
         System.out.println("response : " + response);
 
