@@ -117,7 +117,7 @@ public class LogController {
     }
 
     //매일 22시 1분에 elasticsearch 로그 기록 삭제 후 파일에 저장, s3 스토리지에 업로드
-    @Scheduled(cron = "0 40 7 * * *")
+    @Scheduled(cron = "0 43 7 * * *")
     @DeleteMapping("/logs")
     public ResponseEntity<?> deleteLog() throws IOException, ClassNotFoundException {
         HttpHeaders headers = new HttpHeaders();
