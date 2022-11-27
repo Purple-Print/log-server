@@ -26,15 +26,10 @@ import java.util.Date;
 public class AnalysisDTO {
 
     private int id;
-    private String finalFeedback;
     private int friend1;
     private String friend1Comment;
     private int friend2;
     private String friend2Comment;
-    private int friend3;
-    private String friend3Comment;
-    private int friend4;
-    private String friend4Comment;
     private String playPlace;
     private int childId;
     private String sendYn;
