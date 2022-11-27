@@ -34,13 +34,13 @@ public class Analysis {
     private int id;
 
     @Column(name = "friend1")
-    private int friend1;
+    private Integer friend1;
 
     @Column(name = "friend1_comment")
     private String friend1Comment;
 
     @Column(name = "friend2")
-    private int friend2;
+    private Integer friend2;
 
     @Column(name = "friend2_comment")
     private String friend2Comment;
@@ -48,7 +48,7 @@ public class Analysis {
     @Column(name = "play_place")
     private String playPlace;
 
-    @JoinColumn(name = "child_id")
+    @Column(name = "child_id")
     private int child;
 
     @Column(name = "send_yn")
