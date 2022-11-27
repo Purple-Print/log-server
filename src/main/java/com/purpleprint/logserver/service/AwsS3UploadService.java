@@ -1,11 +1,14 @@
 package com.purpleprint.logserver.service;
 
 import com.purpleprint.logserver.dto.UploadFileDTO;
+import com.purpleprint.logserver.entity.Logfile;
 import com.purpleprint.logserver.exception.FileEmptyException;
 import com.purpleprint.logserver.repository.AwsS3UploadRepository;
+import com.purpleprint.logserver.repository.LogfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -28,13 +31,15 @@ import java.time.LocalDate;
 public class AwsS3UploadService {
 
     private final AwsS3UploadRepository awsS3UploadRepository;
+    private final LogfileRepository logfileRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Autowired
-    public AwsS3UploadService(AwsS3UploadRepository awsS3UploadRepository) {
+    public AwsS3UploadService(AwsS3UploadRepository awsS3UploadRepository, LogfileRepository logfileRepository) {
         this.awsS3UploadRepository = awsS3UploadRepository;
+        this.logfileRepository = logfileRepository;
     }
 
     public void validateFileExists(MultipartFile multipartFile) {
@@ -44,6 +49,7 @@ public class AwsS3UploadService {
         }
     }
 
+    @Transactional
     public UploadFileDTO upload(String folderName, MultipartFile multipartFile) {
 
         LocalDate now = LocalDate.now();
@@ -68,6 +74,14 @@ public class AwsS3UploadService {
         awsS3UploadRepository.awsUpload(s3Location, conversionFileName, multipartFile);
 
         String url = "https://purpleprint-bucket.s3.ap-northeast-2.amazonaws.com/" + folderName + "/" + conversionFileName;
+
+        Logfile saveLogfile = null;
+
+        saveLogfile = logfileRepository.save(new Logfile(
+                0,
+                url,
+                s3Key
+        ));
 
         return new UploadFileDTO(url, s3Key);
     }
