@@ -125,7 +125,7 @@ public class LogController {
 
         Page<LogModel> getLogResult = logService.getAllLogs();
         List<LogModel> logList = getLogResult.getContent();
-`
+
         String rootLocation = System.getProperty("user.dir");
 
         System.out.println("rootLocation : " + rootLocation);
