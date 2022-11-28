@@ -100,12 +100,12 @@ public class LogService {
 
             if(!bestFriends.get("bestfriend_1").equals("None") && bestFriends.get("bestfriend_1") != null) {
                 friendsDTO.setFriend1(Integer.parseInt((String) bestFriends.get("bestfriend_1")));
-                friendsDTO.setFriend1Comment(getComment(Integer.parseInt(String.valueOf(bestFriends.get("time")))));
+                friendsDTO.setFriend1Comment(getComment(Integer.parseInt(String.valueOf(bestFriends.get("time_1")))));
             }
 
             if(!bestFriends.get("bestfriend_2").equals("None") && bestFriends.get("bestfriend_2") != null) {
                 friendsDTO.setFriend2(Integer.parseInt((String) bestFriends.get("bestfriend_2")));
-                friendsDTO.setFriend2Comment(getComment(Integer.parseInt(String.valueOf(bestFriends.get("time2")))));
+                friendsDTO.setFriend2Comment(getComment(Integer.parseInt(String.valueOf(bestFriends.get("time_2")))));
             }
 
             analysisRepository.save(new Analysis(
