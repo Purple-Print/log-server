@@ -98,12 +98,12 @@ public class LogService {
 
             FriendsDTO friendsDTO = new FriendsDTO();
 
-            if(!bestFriends.get("bestfriend_1").equals("") && bestFriends.get("bestfriend_1") != null) {
+            if(!bestFriends.get("bestfriend_1").equals("None") && bestFriends.get("bestfriend_1") != null) {
                 friendsDTO.setFriend1(Integer.parseInt((String) bestFriends.get("bestfriend_1")));
                 friendsDTO.setFriend1Comment(getComment(Integer.parseInt(String.valueOf(bestFriends.get("time")))));
             }
 
-            if(!bestFriends.get("bestfriend_2").equals("") && bestFriends.get("bestfriend_2") != null) {
+            if(!bestFriends.get("bestfriend_2").equals("None") && bestFriends.get("bestfriend_2") != null) {
                 friendsDTO.setFriend2(Integer.parseInt((String) bestFriends.get("bestfriend_2")));
                 friendsDTO.setFriend2Comment(getComment(Integer.parseInt(String.valueOf(bestFriends.get("time2")))));
             }
