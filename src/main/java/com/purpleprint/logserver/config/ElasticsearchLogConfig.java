@@ -29,7 +29,7 @@ public class ElasticsearchLogConfig extends AbstractElasticsearchConfiguration {
     @Bean
     public RestHighLevelClient elasticsearchClient() {
         final ClientConfiguration configuration = ClientConfiguration.builder()
-                .connectedTo("43.201.98.232:9200")
+                .connectedTo("13.124.103.173:9200")
                 .build();
 
         return RestClients.create(configuration).rest();
