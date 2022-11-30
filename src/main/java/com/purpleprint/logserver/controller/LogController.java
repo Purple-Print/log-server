@@ -55,7 +55,7 @@ public class LogController {
     }
 
     //ai api 호출해서 받은 분석결과 db에 저장 로직
-    @Scheduled(cron = "0 59 23 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     @GetMapping("/logs")
     public ResponseEntity<?> sendLogsAndGetAnalysisResult() {
 
@@ -117,7 +117,7 @@ public class LogController {
     }
 
     //매일 22시 1분에 elasticsearch 로그 기록 삭제 후 파일에 저장, s3 스토리지에 업로드
-    @Scheduled(cron = "0 1 00 * * *")
+    @Scheduled(cron = "0 1 22 * * *")
     @DeleteMapping("/logs")
     public ResponseEntity<?> deleteLog() throws IOException, ClassNotFoundException {
         HttpHeaders headers = new HttpHeaders();
