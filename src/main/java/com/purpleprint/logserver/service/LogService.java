@@ -80,7 +80,7 @@ public class LogService {
 
         System.out.println(resultMap);
 
-        String serverURL = "http://34.64.214.200:8000/user-analysis";
+        String serverURL = "http://13.209.6.160:8000/user-analysis";
 
         RestTemplate restTemplate = new RestTemplate();
 
